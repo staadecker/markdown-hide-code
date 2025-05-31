@@ -8,13 +8,12 @@ authors = [{ name = "Martin Staadecker", email = "machstg@gmail.com" }]
 description = "Hide code blocks from the rendered markdown output, useful for running tests on your documentation."
 readme = "README.md"
 requires-python = ">=3.9"
-license = { file = "LICENSE" }
+license = "MIT"
 dynamic = ["version"]
 classifiers = [
     "Programming Language :: Python :: 3",
     "Operating System :: OS Independent",
     "Development Status :: 3 - Alpha",
-    "License :: OSI Approved :: MIT License",
     "Natural Language :: English",
 ]
 dependencies = ["Markdown", "pymdown-extensions>=8.0"]
