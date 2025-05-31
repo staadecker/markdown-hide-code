@@ -17,15 +17,7 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
     "Natural Language :: English",
 ]
-dependencies = [
-    "Markdown"
-]
-
-[project.optional-dependencies]
-dev = [
-    "ruff",
-    "pre-commit",
-]
+dependencies = ["Markdown", "pymdown-extensions>=8.0"]
 
 [tool.ruff]
 lint.select = ["E4", "E7", "E9", "F", "I", "W292", "W291"]
@@ -34,8 +26,10 @@ lint.select = ["E4", "E7", "E9", "F", "I", "W292", "W291"]
 addopts = "--doctest-modules --ignore=scripts"
 
 [tool.setuptools_scm]
-version_file = "src/_version.py"
 local_scheme = "no-local-version"
+
+[dependency-groups]
+dev = ["pre-commit>=4.2.0", "pytest>=8.3.5", "ruff>=0.11.12"]
 
 [project.urls]
 repository = "https://github.com/staadecker/markdown-hide-code/"
