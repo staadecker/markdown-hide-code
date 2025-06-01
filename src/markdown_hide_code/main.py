@@ -1,20 +1,17 @@
-import functools
-
 from markdown.extensions import Extension
 from markdown.extensions.attr_list import AttrListExtension
-from pymdownx.superfences import (
-    SuperFencesCodeExtension,
-    _formatter,
-    _validator,
-    default_validator,
-    fence_code_format,
-)
+from pymdownx.superfences import SuperFencesCodeExtension
 
 
-def _custom_formatter(*args, attrs=None, **kwargs):
-    if attrs and "hide" in attrs:
-        return "<div style='display:none;'></div>"
-    return fence_code_format(*args, attrs=attrs, **kwargs)
+def _custom_formatter(*args, **kwargs):
+    return "<div style='display:none;'></div>"
+
+
+def _custom_validator(language, inputs, options, attrs, md) -> bool:
+    if "hide" in inputs and inputs["hide"] == "hide":
+        attrs["hide"] = True
+        return True
+    return False
 
 
 class HideCodeExtension(Extension):
@@ -28,17 +25,19 @@ class HideCodeExtension(Extension):
                 superfences_extension = ext
             elif isinstance(ext, AttrListExtension):
                 attr_extension = ext
+
         if not superfences_extension or not attr_extension:
             raise ImportError(
                 "Extensions 'pymdownx.superfences' and 'attr_list' must be included in your configuration **before** markdown_hide_code."
             )
 
-        superfences_extension.extend_super_fences(
-            name="*",
-            formatter=functools.partial(
-                _formatter, class_name="", _fmt=_custom_formatter
-            ),
-            validator=functools.partial(_validator, validator=default_validator),
+        superfences_extension.superfences.append(
+            {
+                "name": "markdown_hide_code",
+                "test": lambda _: True,
+                "formatter": _custom_formatter,
+                "validator": _custom_validator,
+            }
         )
 
 
